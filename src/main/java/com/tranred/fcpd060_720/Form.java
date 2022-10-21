@@ -272,12 +272,10 @@ public class Form extends JFrame {
         textField = new JTextField();
         textField.setColumns(10);
         textField.setBounds(74, 120, 120, 23);
-        textField.setText("kleon");
         layeredPane.add(textField);
 
         passwordField = new JPasswordField();
         passwordField.setBounds(234, 120, 120, 23);
-        passwordField.setText("yEIedePAmSC28ausR7cn");
         layeredPane.add(passwordField);
 
         JLabel label_1 = new JLabel("Usuario");
