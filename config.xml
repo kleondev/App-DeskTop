@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<configuracion>
+<!--  Mac -->
+<!--    <rutaX>/Users/Keke/Documents/workspace/tmp</rutaX>-->
+<!--  Windows -->
+    <rutaX>C:\tmp</rutaX>
+    <rutaAD></rutaAD>
+    <!-- true or false: para las transacciones de Btrans-->
+    <btrans>false</btrans>
+    <ip>164.90.141.243</ip>
+    <port>1433</port>
+    <dbname>rep_post_dia</dbname>
+    <bancos>
+        <banco>
+            <codBanco>722</codBanco>
+            <nameBanco>Banco Plaza</nameBanco>
+            <activo>true</activo>
+            <!--  posición y tamaño  -->
+            <BoundX>50</BoundX>
+            <BoundY>50</BoundY>
+            <BoundWidth>100</BoundWidth>
+            <BoundHeight>30</BoundHeight>
+        </banco>
+        <banco>
+            <codBanco>720</codBanco>
+            <nameBanco>Banco Venezolano de Crédito</nameBanco>
+            <activo>true</activo>
+            <!--  posición y tamaño  -->
+            <BoundX>180</BoundX>
+            <BoundY>50</BoundY>
+            <BoundWidth>200</BoundWidth>
+            <BoundHeight>30</BoundHeight>
+        </banco>
+    </bancos>
+</configuracion>
