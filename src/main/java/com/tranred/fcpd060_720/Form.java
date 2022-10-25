@@ -412,6 +412,8 @@ public class Form extends JFrame {
             return;
         }
 
+        String username = " Usuario : ";
+
         try {
             tran.setDriver("net.sourceforge.jtds.jdbc.Driver");
             tran.setUrl("jdbc:jtds:sqlserver://");
@@ -423,7 +425,9 @@ public class Form extends JFrame {
             tran.setUsuarioBD(textField.getText());
             tran.setPasswordUsuarioBD(new String(passwordField.getPassword()));
 
-            LOGGER.info("PROCESO INICIADO -----------------------------------------------");
+            username += textField.getText() + " - ";
+
+            LOGGER.info(username + "PROCESO INICIADO -----------------------------------------------");
             lblMensaje.setText("PROCESO INICIADO");
 
             for(Banco banco : bancoChecked) {
@@ -496,15 +500,17 @@ public class Form extends JFrame {
 
             }
 
-            LOGGER.info("PROCESO FINALIZADO ---------------------------------------------");
+            LOGGER.info(username + "PROCESO FINALIZADO ---------------------------------------------");
             lblMensaje.setText("LISTO!!!");
 
             JOptionPane.showMessageDialog(this, "Se generaron los archivos correctamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
 
             lblMensaje.setText("");
         }catch (SQLException e) {
+            lblMensaje.setText("");
             if(e.getErrorCode() == LOGIN_FAILED) {
                 JOptionPane.showMessageDialog(this, "El usuario y/o contraseña es inválido", "Mensaje", JOptionPane.ERROR_MESSAGE);
+                LOGGER.error(username + "El usuario y/o contraseña es inválido");
             }
         }
 
