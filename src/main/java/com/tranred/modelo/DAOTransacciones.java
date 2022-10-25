@@ -1,14 +1,11 @@
 package com.tranred.modelo;
 
-import java.sql.CallableStatement;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DAOTransacciones extends ConnManager {
     static final Logger LOGGER = LogManager.getLogger(DAOTransacciones.class.getName());

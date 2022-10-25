@@ -1,10 +1,10 @@
 package com.tranred.fcpd060_720.bean;
 
-import java.io.Serializable;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 @XmlRootElement(name = "configuracion")
 @XmlAccessorType (XmlAccessType.FIELD)

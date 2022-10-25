@@ -1,20 +1,12 @@
 package com.tranred.fcpd060_720;
 
+import com.tranred.fcpd060_720.bean.Transacciones;
+import com.tranred.utils.Archivo;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.tranred.utils.Archivo;
-import com.tranred.utils.Fecha;
-
-import com.tranred.fcpd060_720.bean.Transacciones;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.Date;
-import java.util.stream.Collectors;
 
 public class Proceso {
 

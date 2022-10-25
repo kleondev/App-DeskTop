@@ -3,47 +3,43 @@ package com.tranred.fcpd060_720;
 import com.tranred.domain.Banco;
 import com.tranred.fcpd060_720.bean.Configuracion;
 import com.tranred.modelo.DAOTransacciones;
-
-import java.awt.*;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-
 import com.tranred.utils.Archivo;
 import com.tranred.utils.DateLabelFormatter;
 import com.tranred.utils.Fecha;
 import com.tranred.utils.Numero;
-
-import java.awt.event.*;
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import org.jdatepicker.impl.JDatePickerImpl;
-import org.jdatepicker.impl.UtilDateModel;
 import org.apache.logging.log4j.LogManager;
 import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import java.util.Properties;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.text.MessageFormat;
-import java.util.stream.Collectors;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 
 public class Form extends JFrame {
@@ -61,6 +57,7 @@ public class Form extends JFrame {
     private final List<Banco> bancos = new ArrayList<Banco>();
     private List<JCheckBox> checkBoxesDia = new ArrayList<JCheckBox>();
     private List<JCheckBox> checkBoxesRango = new ArrayList<JCheckBox>();
+    private final Integer LOGIN_FAILED = 18456;
 
     public static void main(String[] args) {
         String sSistemaOperativo = System.getProperty("os.name");
@@ -135,7 +132,7 @@ public class Form extends JFrame {
             e.printStackTrace();
         }
 
-        setTitle("POSTRAEMAE");
+        setTitle("POSTREMAE");
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 450, 460);
@@ -166,6 +163,8 @@ public class Form extends JFrame {
         JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
 
         // TAB DIA
+        boolean selected = false;
+
         if(bancos != null) {
             JLabel lblBanco = new JLabel("Banco:");
             lblBanco.setBounds(190, 20, 100, 23);
@@ -174,7 +173,8 @@ public class Form extends JFrame {
             panel.add(lblBanco);
 
             for(Banco banco: bancos) {
-                bancoPanel = new JCheckBox(banco.getNameBanco());
+                selected = (banco.getActivo()== true)? true : false;
+                bancoPanel = new JCheckBox(banco.getCodBanco().concat(" ").concat(banco.getNameBanco()), selected);
                 bancoPanel.setEnabled(banco.getActivo());
                 bancoPanel.setFocusable(false);
                 bancoPanel.setBounds(banco.getBoundX(),banco.getBoundY(),banco.getBoundWidth(),banco.getBoundHeight());
@@ -186,7 +186,7 @@ public class Form extends JFrame {
         }
 
         JLabel lblFecha = new JLabel("Fecha:");
-        lblFecha.setBounds(190, 110, 45, 23);
+        lblFecha.setBounds(190, 130, 45, 23);
         lblFecha.setFont(new Font("Tahoma", Font.BOLD, 14));
         panel.setLayout(null);
         panel.add(lblFecha);
@@ -194,7 +194,7 @@ public class Form extends JFrame {
         datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
         datePicker.setBackground(Color.WHITE);
         datePicker.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        datePicker.setBounds(147, 150, 130, 25);
+        datePicker.setBounds(147, 170, 130, 25);
         datePicker.getJFormattedTextField().setBackground(Color.WHITE);
         panel.add(datePicker);
 
@@ -213,7 +213,8 @@ public class Form extends JFrame {
             panel_1.add(lblBanco2);
 
             for(Banco banco: bancos) {
-                bancoPanel1 = new JCheckBox(banco.getNameBanco());
+                selected = (banco.getActivo()== true)? true : false;
+                bancoPanel1 = new JCheckBox(banco.getCodBanco().concat(" ").concat(banco.getNameBanco()), selected);
                 bancoPanel1.setFocusable(false);
                 bancoPanel1.setEnabled(banco.getActivo());
                 bancoPanel1.setBounds(banco.getBoundX(),banco.getBoundY(),banco.getBoundWidth(),banco.getBoundHeight());
@@ -224,7 +225,7 @@ public class Form extends JFrame {
 
         JLabel label = new JLabel("Fecha:");
         label.setFont(new Font("Tahoma", Font.BOLD, 14));
-        label.setBounds(190, 110, 45, 23);
+        label.setBounds(190, 130, 45, 23);
         panel_1.add(label);
         lblMensaje = new JLabel("");
         lblMensaje.setHorizontalAlignment(SwingConstants.CENTER);
@@ -234,12 +235,12 @@ public class Form extends JFrame {
 
         JLabel lblDesde = new JLabel("Desde");
         lblDesde.setFont(new Font("Tahoma", Font.BOLD, 14));
-        lblDesde.setBounds(95, 130, 46, 14);
+        lblDesde.setBounds(95, 150, 46, 14);
         panel_1.add(lblDesde);
 
         JLabel lblHsta = new JLabel("Hasta");
         lblHsta.setFont(new Font("Tahoma", Font.BOLD, 14));
-        lblHsta.setBounds(291, 130, 46, 14);
+        lblHsta.setBounds(291, 150, 46, 14);
         panel_1.add(lblHsta);
 
         UtilDateModel model2 = new UtilDateModel();
@@ -248,7 +249,7 @@ public class Form extends JFrame {
         datePicker2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         datePicker2.getJFormattedTextField().setBackground(Color.WHITE);
         datePicker2.setBackground(Color.WHITE);
-        datePicker2.setLocation(247, 150);
+        datePicker2.setLocation(247, 170);
         datePicker2.setSize(130, 50);
         panel_1.add(datePicker2);
 
@@ -258,7 +259,7 @@ public class Form extends JFrame {
         datePicker3.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         datePicker3.setBackground(Color.WHITE);
         datePicker3.getJFormattedTextField().setBackground(Color.WHITE);
-        datePicker3.setLocation(51, 150);
+        datePicker3.setLocation(51, 170);
         datePicker3.setSize(130, 50);
         panel_1.add(datePicker3);
 
@@ -358,7 +359,7 @@ public class Form extends JFrame {
 
             for(Banco banco: this.bancos) {
                 banco.setChecked(false);
-                if(checkBoxesActivated.stream().anyMatch(e -> e.getText() == banco.getNameBanco())) {
+                if(checkBoxesActivated.stream().anyMatch(e -> e.getText().equalsIgnoreCase(banco.getCodBanco().concat(" ").concat(banco.getNameBanco())))) {
                     banco.setChecked(true);
                     bancoChecked.add(banco);
                 }
@@ -382,7 +383,7 @@ public class Form extends JFrame {
 
             for(Banco banco: this.bancos) {
                 banco.setChecked(false);
-                if(checkBoxesActivated.stream().anyMatch(e -> e.getText() == banco.getNameBanco())) {
+                if(checkBoxesActivated.stream().anyMatch(e -> e.getText().equalsIgnoreCase(banco.getCodBanco().concat(" ").concat(banco.getNameBanco())))) {
                     banco.setChecked(true);
                     bancoChecked.add(banco);
                 }
@@ -411,90 +412,103 @@ public class Form extends JFrame {
             return;
         }
 
-        tran.setDriver("net.sourceforge.jtds.jdbc.Driver");
-        tran.setUrl("jdbc:jtds:sqlserver://");
-        tran.setNombreIPServidorBD(cfg.getIp());
-        tran.setPuertoServidorBD(cfg.getPort());
-        tran.setNombreBD(cfg.getDbname());
-        tran.setPropiedades(";charset=ISO-8859-1;appName=fcpd060-720");
+        try {
+            tran.setDriver("net.sourceforge.jtds.jdbc.Driver");
+            tran.setUrl("jdbc:jtds:sqlserver://");
+            tran.setNombreIPServidorBD(cfg.getIp());
+            tran.setPuertoServidorBD(cfg.getPort());
+            tran.setNombreBD(cfg.getDbname());
+            tran.setPropiedades(";charset=ISO-8859-1;appName=fcpd060-720");
 
-        tran.setUsuarioBD(textField.getText());
-        tran.setPasswordUsuarioBD(new String(passwordField.getPassword()));
+            tran.setUsuarioBD(textField.getText());
+            tran.setPasswordUsuarioBD(new String(passwordField.getPassword()));
 
-        LOGGER.info("PROCESO INICIADO -----------------------------------------------");
-        lblMensaje.setText("PROCESO INICIADO");
+            LOGGER.info("PROCESO INICIADO -----------------------------------------------");
+            lblMensaje.setText("PROCESO INICIADO");
 
-        for(Banco banco : bancoChecked) {
+            for(Banco banco : bancoChecked) {
 
-            // Ejecutar Consulta
-            tran.conectar();
-            sentencia = tran.crearSentencia("EXEC sp_liq_postremae @cod_banco = ?, @fecha_inicio = ?, @fecha_fin = ?, @lote = ?");
-            sentencia.setString(1, banco.getCodBanco());
-            sentencia.setString(2, fechaInicial.getString("yyyy-MM-dd") + " 00:00:00.001");
-            sentencia.setString(3, fechaFinal.getString("yyyy-MM-dd") + " 23:59:59.999");
-            sentencia.setString(4, null);
-            registrosLiquidacion = tran.getTransacciones(sentencia);
-            tran.desconectar();
-
-            if (registrosLiquidacion == null) {
-                JOptionPane.showMessageDialog(this, banco.getNameBanco() + " : " + "Sin informacion para procesar", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
-//                return;
-            }else{
-
+                // Ejecutar Consulta
                 tran.conectar();
-                sentencia = tran.crearSentencia("EXEC SP_REPORTES_POSTREMAE @cod_banco = ?, @fecha_inicio = ?, @fecha_fin = ?");
+                sentencia = tran.crearSentencia("EXEC sp_liq_postremae @cod_banco = ?, @fecha_inicio = ?, @fecha_fin = ?, @lote = ?");
                 sentencia.setString(1, banco.getCodBanco());
                 sentencia.setString(2, fechaInicial.getString("yyyy-MM-dd") + " 00:00:00.001");
                 sentencia.setString(3, fechaFinal.getString("yyyy-MM-dd") + " 23:59:59.999");
-                registrosDetalles = tran.getTransacciones(sentencia);
+                sentencia.setString(4, null);
+                registrosLiquidacion = tran.getTransacciones(sentencia);
+                tran.getConexion().commit();
+                sentencia.close();
                 tran.desconectar();
 
 
-                Date today = new Date();
-                SimpleDateFormat todayFormat = new SimpleDateFormat("YYYYMMdd");
-                SimpleDateFormat todayFormatFolder = new SimpleDateFormat("MMM.dd");
-                String DatePOSTREMAE = todayFormat.format(today);
-                String DatePOSTREMAEFolder = todayFormatFolder.format(today);
+                if (registrosLiquidacion == null) {
+                    JOptionPane.showMessageDialog(this, banco.getNameBanco() + " : " + "Sin informacion para procesar", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+//                return;
+                }else{
 
-                List<String> lotes = new ArrayList<>();
-                Integer maxWidth = 5;
-                for (Integer i = 0; i < registrosLiquidacion.length; i++) {
-                    String lote = registrosLiquidacion[i][2];
-                    if(!lotes.stream().anyMatch(l -> l.equals(lote))) {
-                        lotes.add(lote);
-                        String formattedLote = String.format("%0" + maxWidth + "d", Integer.valueOf(lote));
-                        Archivo archivo = new Archivo(new File(System.getProperty("user.dir") + File.separator + "POSTREMAE" + DatePOSTREMAE + formattedLote + ".txt"));
-                        p = new Proceso(registrosLiquidacion, archivo, lote);
-                        p.iniciar();
+                    tran.conectar();
+                    sentencia = tran.crearSentencia("EXEC SP_REPORTES_POSTREMAE @cod_banco = ?, @fecha_inicio = ?, @fecha_fin = ?");
+                    sentencia.setString(1, banco.getCodBanco());
+                    sentencia.setString(2, fechaInicial.getString("yyyy-MM-dd") + " 00:00:00.001");
+                    sentencia.setString(3, fechaFinal.getString("yyyy-MM-dd") + " 23:59:59.999");
+                    registrosDetalles = tran.getTransacciones(sentencia);
+                    tran.getConexion().commit();
+                    sentencia.close();
+                    tran.desconectar();
 
-                        archivo.copyFile(cfg.getRutaX() + File.separator + banco.getNameBanco() + File.separator + DatePOSTREMAEFolder);
-                        archivo.getArchivo().delete();
+
+                    Date today = new Date();
+                    SimpleDateFormat todayFormat = new SimpleDateFormat("YYYYMMdd");
+                    SimpleDateFormat todayFormatFolder = new SimpleDateFormat("MMM.dd");
+                    String DatePOSTREMAE = todayFormat.format(today);
+                    String DatePOSTREMAEFolder = todayFormatFolder.format(today);
+
+                    List<String> lotes = new ArrayList<>();
+                    Integer maxWidth = 5;
+                    for (Integer i = 0; i < registrosLiquidacion.length; i++) {
+                        String lote = registrosLiquidacion[i][2];
+                        if(!lotes.stream().anyMatch(l -> l.equals(lote))) {
+                            lotes.add(lote);
+                            String formattedLote = String.format("%0" + maxWidth + "d", Integer.valueOf(lote));
+                            Archivo archivo = new Archivo(new File(System.getProperty("user.dir") + File.separator + "POSTREMAE" + DatePOSTREMAE + formattedLote + ".txt"));
+                            p = new Proceso(registrosLiquidacion, archivo, lote);
+                            p.iniciar();
+
+                            archivo.copyFile(cfg.getRutaX() + File.separator + banco.getCodBanco() + File.separator + DatePOSTREMAEFolder);
+                            archivo.getArchivo().delete();
+                        }
                     }
+
+                    Archivo archivo = new Archivo(new File(System.getProperty("user.dir") + File.separator + "REP_POSTREMAE_RES_" + DatePOSTREMAE + ".txt"));
+                    p = new Proceso(registrosDetalles, archivo, "RESUMEN");
+                    p.iniciar();
+                    archivo.copyFile(cfg.getRutaX() + File.separator + banco.getCodBanco() + File.separator + DatePOSTREMAEFolder);
+                    archivo.getArchivo().delete();
+
+                    archivo = new Archivo(new File(System.getProperty("user.dir") + File.separator + "REP_POSTREMAE_DET_" + DatePOSTREMAE + ".txt"));
+                    p = new Proceso(registrosDetalles, archivo, "DETALLE");
+                    p.iniciar();
+                    lblMensaje.setText("Copiando archivos a sus destinos");
+                    archivo.copyFile(cfg.getRutaX() + File.separator + banco.getCodBanco() + File.separator + DatePOSTREMAEFolder);
+                    archivo.getArchivo().delete();
+
                 }
-
-                Archivo archivo = new Archivo(new File(System.getProperty("user.dir") + File.separator + "REP_POSTREMAE_RES_" + DatePOSTREMAE + ".txt"));
-                p = new Proceso(registrosDetalles, archivo, "RESUMEN");
-                p.iniciar();
-                archivo.copyFile(cfg.getRutaX() + File.separator + banco.getNameBanco() + File.separator + DatePOSTREMAEFolder);
-                archivo.getArchivo().delete();
-
-                archivo = new Archivo(new File(System.getProperty("user.dir") + File.separator + "REP_POSTREMAE_DET_" + DatePOSTREMAE + ".txt"));
-                p = new Proceso(registrosDetalles, archivo, "DETALLE");
-                p.iniciar();
-                lblMensaje.setText("Copiando archivos a sus destinos");
-                archivo.copyFile(cfg.getRutaX() + File.separator + banco.getNameBanco() + File.separator + DatePOSTREMAEFolder);
-                archivo.getArchivo().delete();
 
             }
 
+            LOGGER.info("PROCESO FINALIZADO ---------------------------------------------");
+            lblMensaje.setText("LISTO!!!");
+
+            JOptionPane.showMessageDialog(this, "Se generaron los archivos correctamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+
+            lblMensaje.setText("");
+        }catch (SQLException e) {
+            if(e.getErrorCode() == LOGIN_FAILED) {
+                JOptionPane.showMessageDialog(this, "El usuario y/o contraseña es inválido", "Mensaje", JOptionPane.ERROR_MESSAGE);
+            }
         }
 
-        LOGGER.info("PROCESO FINALIZADO ---------------------------------------------");
-        lblMensaje.setText("LISTO!!!");
 
-        JOptionPane.showMessageDialog(this, "Se generaron los archivos correctamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
-
-        lblMensaje.setText("");
 
     }
 

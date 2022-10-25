@@ -1,6 +1,7 @@
 package com.tranred.utils;
 
 
+import javafx.util.StringConverter;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -14,7 +15,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
-import javafx.util.StringConverter;
 
 public class Fecha {
     private Date fecha;

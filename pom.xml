@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.tranred</groupId>
-    <artifactId>fcpd060_720_swing</artifactId>
+    <artifactId>postremae_swing</artifactId>
     <version>0.0.3</version>
     <packaging>jar</packaging>
     <properties>
@@ -11,7 +11,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
     
-    <name>madrugada: fcpd060.720</name>
+    <name>madrugada: postremae</name>
 
     <organization>
         <name>Tranred</name>
@@ -36,7 +36,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.tranred.fcpd060_720.Form</mainClass>
+                            <mainClass>com.tranred.postremae.Form</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

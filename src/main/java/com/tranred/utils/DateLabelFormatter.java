@@ -1,9 +1,9 @@
 package com.tranred.utils;
 
+import javax.swing.JFormattedTextField.AbstractFormatter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import javax.swing.JFormattedTextField.AbstractFormatter;
 
 public class DateLabelFormatter extends AbstractFormatter {
     private static final long serialVersionUID = 1L;

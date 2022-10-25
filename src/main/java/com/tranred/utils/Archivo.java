@@ -1,11 +1,9 @@
 package com.tranred.utils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.OutputStream;
+import org.apache.commons.io.output.FileWriterWithEncoding;
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -13,8 +11,6 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import org.apache.commons.io.output.FileWriterWithEncoding;
-import org.apache.commons.lang3.StringUtils;
 
 public class Archivo {
     private File archivo;

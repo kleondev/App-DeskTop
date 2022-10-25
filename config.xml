@@ -7,7 +7,7 @@
     <rutaAD></rutaAD>
     <!-- true or false: para las transacciones de Btrans-->
     <btrans>false</btrans>
-    <ip>164.90.141.243</ip>
+    <ip>10.198.72.32</ip>
     <port>1433</port>
     <dbname>rep_post_dia</dbname>
     <bancos>
@@ -18,17 +18,17 @@
             <!--  posición y tamaño  -->
             <BoundX>50</BoundX>
             <BoundY>50</BoundY>
-            <BoundWidth>100</BoundWidth>
+            <BoundWidth>250</BoundWidth>
             <BoundHeight>30</BoundHeight>
         </banco>
         <banco>
-            <codBanco>720</codBanco>
-            <nameBanco>Banco Venezolano de Crédito</nameBanco>
-            <activo>true</activo>
+            <codBanco>723</codBanco>
+            <nameBanco>Bangente</nameBanco>
+            <activo>false</activo>
             <!--  posición y tamaño  -->
-            <BoundX>180</BoundX>
-            <BoundY>50</BoundY>
-            <BoundWidth>200</BoundWidth>
+            <BoundX>50</BoundX>
+            <BoundY>90</BoundY>
+            <BoundWidth>250</BoundWidth>
             <BoundHeight>30</BoundHeight>
         </banco>
     </bancos>
